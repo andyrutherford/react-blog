@@ -8,7 +8,8 @@ import './Blog.css';
 
 class Blog extends Component {
     state = {
-        posts: []
+        posts: [],
+        selectedPostId: null
     }
 
     componentDidMount() {
@@ -24,8 +25,12 @@ class Blog extends Component {
                     }
                 })
                 this.setState( {posts: updatedPosts} )
-                //console.log(response);
+                console.log(response);
             })
+    }
+
+    postSelectedHandler = (id) => {
+        this.setState({selectedPostId: id});
     }
 
     render () {
@@ -34,7 +39,8 @@ class Blog extends Component {
             return <Post 
                 key={post.id} 
                 title={post.title}
-                author={post.author} />
+                author={post.author}
+                clicked={() => this.postSelectedHandler(post.id)} />
         });
 
         return (
@@ -43,7 +49,7 @@ class Blog extends Component {
                     {posts}
                 </section>
                 <section>
-                    <FullPost />
+                    <FullPost id={this.state.selectedPostId} />
                 </section>
                 <section>
                     <NewPost />
