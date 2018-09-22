@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
+import { Link } from 'react-router-dom';
 
 import Post from '../../../components/Post/Post';
 import './Posts.css';
@@ -15,7 +16,7 @@ class Posts extends Component {
         axios.get('/posts/')
             .then(response => {
                 //Fetch all posts but only store first four
-                const posts = response.data.slice(0,8);
+                const posts = response.data.slice(0,4);
                 //Add author property to each post
                 const updatedPosts = posts.map(post => {
                     return {
@@ -41,11 +42,13 @@ class Posts extends Component {
         let posts = <p style={{textAlign: 'center'}}>Something went wrong!</p>;
         if (!this.state.error) {
             posts = this.state.posts.map(post => {
-                return <Post 
-                    key={post.id} 
-                    title={post.title}
-                    author={post.author}
-                    clicked={() => this.postSelectedHandler(post.id)} />
+                return (
+                    <Link to={'/' + post.id}  key={post.id}>
+                        <Post 
+                        title={post.title}
+                        author={post.author}
+                        clicked={() => this.postSelectedHandler(post.id)} />
+                    </Link>)
             });
         }
 
